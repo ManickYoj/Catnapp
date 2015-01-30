@@ -77,26 +77,15 @@ module.exports.remove = function (req, res) {
 	};
 
 	// Find oldest DB record and delete
-	Cat.find()
-	   .sort({age: -1})
-	   .limit(1)
-	   .exec( function(err, cat) {
-		   	if (err) {
-				pageData.error = "Cat deletion failed!";
-				res.render('result', pageData);
-				return console.error("Problem deleting cat: " + cat, err);
-			} else {
-				Cat.remove( {_id:cat[0].id}, function(err) {
-					if (err) {
-						pageData.error = "Cat deletion failed!";
-						res.render('result', pageData);
-						return console.error("Problem deleting cat: " + cat, err);
-					} else {
-						pageData.success = cat[0].name + " sent to the country farm.";
-						pageData.cat = cat;
-						res.render('result', pageData);
-					}
-				});
-			}
+	Cat.findOneAndRemove({}, {sort: {age: -1}}, function(err, cat) {
+		if (err) {
+			pageData.error = "Cat deletion failed!";
+			res.render('result', pageData);
+			return console.error("Problem deleting cat: " + cat, err);
+		} else {
+			pageData.success = cat.name + " sent to the country farm.";
+			pageData.cat = [cat];
+			res.render('result', pageData);
+		}
 	});
 };

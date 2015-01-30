@@ -16,7 +16,9 @@ var cats = require('./routes/cats');
 // Config
 var app = express();
 var mongoURI = process.env.MONGO_URI || "mongodb://localhost/test";
+console.localg(mongoURI);
 var PORT = process.env.PORT || 3000;
+console.localg(PORT);
 mongoose.connect(mongoURI);
 app.engine('handlebars', exphbs({defaultLayout: 'main'}));
 app.set('view engine', 'handlebars');
